@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<link rel="icon" type="image/png" href="{{url_for('static', filename='images/icons/favicon_new.ico')}}">
+<title>Admin Panel</title>
+
+    <style>
+        table.dataframe,
+        .dataframe th,
+        .dataframe td {
+            border: none;
+            border-bottom: 1px solid #C8C8C8;
+            border-collapse: collapse;
+            text-align: left;
+            padding: 10px;
+            margin-bottom: 40px;
+            font-size: 0.9em;
+        }
+
+        .data th {
+            background-color: #00008B;
+            color: white;
+        }
+
+        .container {
+            font-family: arial;
+            font-size: 18px;
+            width: 1020px;
+            display: flex;
+            justify-content: center;
+        }
+
+        body {
+
+            overflow-x: hidden;
+
+
+
+        }
+
+        .form-control-label {
+            margin-bottom: 0
+        }
+
+        input,
+        textarea,
+        button {
+            padding: 8px 15px;
+            border-radius: 5px !important;
+            margin: 5px 0px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            font-size: 18px !important;
+            font-weight: 300
+        }
+
+        input:focus,
+        textarea:focus {
+            -moz-box-shadow: none !important;
+            -webkit-box-shadow: none !important;
+            box-shadow: none !important;
+            border: 1px solid #00BCD4;
+            outline-width: 0;
+            font-weight: 400
+        }
+
+        .btn-block {
+            text-transform: uppercase;
+            font-size: 15px !important;
+            font-weight: 400;
+            height: 43px;
+            cursor: pointer
+        }
+
+        .btn-block:hover {
+            color: #fff !important
+        }
+
+        button:focus {
+            -moz-box-shadow: none !important;
+            -webkit-box-shadow: none !important;
+            box-shadow: none !important;
+            outline-width: 0
+        }
+
+        .card {
+            padding: 30px 40px;
+            margin-top: 60px;
+            margin-bottom: 60px;
+            border: none !important;
+            box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.2)
+        }
+
+        .form-actions {
+            margin: 0;
+            background-color: transparent;
+            text-align: center;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .navbar-custom {
+            background-color: #8b4d44;
+        }
+
+        /* change the brand and text color */
+        .navbar-custom .navbar-brand,
+        .navbar-custom .navbar-text {
+            color: #ffffff;
+        }
+
+        /* change the link color */
+        .navbar-custom .navbar-nav .nav-link {
+            color: #ffffff;
+        }
+
+        /* change the color of active or hovered links */
+        .navbar-custom .nav-item.active .nav-link,
+        .navbar-custom .nav-item:hover .nav-link {
+
+            color: #ffff00;
+        }
+
+        .scrollit {
+            overflow: scroll;
+            height: 450px;
+        }
+
+        a {
+            font-size: 110%;
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+        .center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+    </style>
+
+    <script src="https://kit.fontawesome.com/a658a7b479.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-sm navbar-custom">
+        <img class="navbar-brand" src="{{ url_for('static', filename='logo.png') }}" height="50" width="53" />
+        <a class="navbar-brand" href="#">  Admin Panel </a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/home">Home</a>
+                </li>
+
+                
+            </ul>
+            <ul class="nav navbar-right">
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout"><i class="fa fa-sign-out" aria-hidden="true"></i></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <br>
+
+
+
+
+    <center> {% for message in get_flashed_messages() %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        {% endfor %}
+    </center>
+
+    <div class="container-fluid">
+        <div class="card-body">
+            <form action="/approve_user" method="POST">
+            <table class="center">
+
+
+<tr><td>Action</td><td><select id="user_level" name="user_level">
+    <option value="User">
+        Change Status from Admin to User
+    </option>
+    <option value="Admin">
+        Change Status from User to Admin
+    </option>
+    <option value="reset">
+        Password Reset
+    </option>
+
+</select></td></tr>
+
+
+
+            </table>
+        
+        
+
+
+        </div>
+        <div class="card-body table table-hover">
+
+
+            <div class="scrollit">
+                <table class='display dataTable mx-auto'>
+
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>ID#</th>
+                            <th>Email Id</th>
+                            <th>User Status</th>
+                            <th>User Level</th>
+                            <th>Date of creation</th>
+
+
+                            <th>Approve</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in payload %}
+                        <tr>
+                            <td>{{ item.id }}</td>
+                            <td>{{ item.email }}</td>
+                            <td>{{ item.user_status }}</td>
+                            <td>{{ item.user_level }}</td>
+                            <td>{{ item.dt_time }}</td>
+
+                            <td>
+
+                               
+
+                                    <input type="checkbox" name="check" id="check" value="{{ item.id }}">
+
+
+
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+
+            </div>
+
+            <div class="card text-center">
+
+                <div class="form-actions">
+
+
+                    <input type="submit" class="btn btn-primary btn-lg" value="Update" />
+                </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js "
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n " crossorigin="anonymous ">
+        </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js "
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo " crossorigin="anonymous ">
+        </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js "
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6 " crossorigin="anonymous ">
+        </script>
+</body>
+
+</html>
